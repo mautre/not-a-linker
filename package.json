@@ -1,0 +1,37 @@
+{
+  "name": "not-a-linker",
+  "version": "1.0.1",
+  "description": "Figma plugin for quick copying frame and section links with multilingual support (English, Русский, Deutsch, Français, Español, Português, 日本語, 한국어, 中文)",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.75.0",
+    "typescript": "^5.0.0"
+  },
+  "keywords": [
+    "figma", 
+    "plugin", 
+    "frames", 
+    "sections", 
+    "links", 
+    "copy", 
+    "multilingual", 
+    "productivity", 
+    "design-tools",
+    "workflow"
+  ],
+  "author": "mautre",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mautre/not-a-linker"
+  },
+  "homepage": "https://github.com/mautre/not-a-linker#readme",
+  "bugs": {
+    "url": "https://github.com/mautre/not-a-linker/issues"
+  }
+} 
