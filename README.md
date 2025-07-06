@@ -30,10 +30,10 @@ Not a Linker copies formatted links to your selected frames and sections in both
 Since this plugin uses private APIs, it must be installed locally:
 
 1. **Clone** this repository: `git clone https://github.com/mautre/not-a-linker.git`
-2. **Install** dependencies: `npm install`
-3. **Build** the plugin: `npm run build`
-4. **Import** in Figma: `Plugins → Development → Import plugin from manifest`
-5. **Select** the `manifest.json` file from the cloned directory
+2. **Import** in Figma: `Plugins → Development → Import plugin from manifest`
+3. **Select** the `manifest.json` file from the cloned directory
+
+> **Note**: No build step required - the plugin is ready to use!
 
 ## 🚀 How to use
 
