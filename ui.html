@@ -131,6 +131,12 @@
             box-shadow: 0 0 0 1px var(--color-border-selected);
         }
 
+        .Button:disabled {
+            opacity: 0.4;
+            cursor: default;
+            pointer-events: none;
+        }
+
         .Button-primary {
             border-color: transparent;
             color: var(--color-on-primary);
@@ -160,6 +166,16 @@
 
         .Preview-mono {
             font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .Preview-empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--color-text-secondary);
+            font-family: inherit;
+            word-break: normal;
         }
 
         .Preview_Link {
@@ -198,6 +214,7 @@
 
         let items = [];
         let t = {};
+        let currentFormat = 'links';
 
         const el = id => document.getElementById(id);
         const post = message => parent.postMessage({ pluginMessage: message }, '*');
@@ -292,7 +309,16 @@
 
         function preview(format) {
             const box = el('preview');
-            box.classList.toggle('Preview-mono', format !== 'links');
+            const empty = items.length === 0;
+            box.classList.toggle('Preview-empty', empty);
+            box.classList.toggle('Preview-mono', !empty && format !== 'links');
+
+            // Ничего не выбрано — подсказка прямо в превью, окно ждёт выделения
+            if (empty) {
+                box.textContent = t.selectNodes;
+                el('formatHint').textContent = '';
+                return;
+            }
 
             if (format === 'links') {
                 box.innerHTML = items
@@ -307,6 +333,7 @@
         }
 
         function showLinks(format) {
+            currentFormat = format;
             const labels = { links: t.formatLinks, text: t.formatText, markdown: t.formatMarkdown };
             formatButtons.forEach(button => {
                 const current = button.dataset.format;
@@ -316,10 +343,18 @@
 
             el('askView').hidden = true;
             el('linksView').hidden = false;
-            preview(format);
+            updateSelection();
+        }
+
+        function updateSelection() {
+            const empty = items.length === 0;
+            formatButtons.forEach(button => { button.disabled = empty; });
+            preview(currentFormat);
 
             // Последний формат в фокусе — достаточно нажать Enter
-            formatButtons.find(button => button.dataset.format === format).focus();
+            if (!empty && !formatButtons.includes(document.activeElement)) {
+                formatButtons.find(button => button.dataset.format === currentFormat).focus();
+            }
         }
 
         formatButtons.forEach((button, index) => {
@@ -395,6 +430,10 @@
             switch (message.type) {
                 case 'show-links':
                     showLinks(FORMATS.includes(message.format) ? message.format : 'links');
+                    break;
+
+                case 'selection':
+                    if (!el('linksView').hidden) updateSelection();
                     break;
 
                 case 'copy-now':

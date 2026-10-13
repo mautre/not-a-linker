@@ -272,6 +272,11 @@ figma.on('run', ({ parameters }: RunEvent) => {
   // Окно скрыто, пока не понятно, нужно ли оно
   figma.showUI(__html__, { width: SIZE.WIDTH, height: SIZE.LINKS_HEIGHT, visible: false, themeColors: true });
   figma.ui.onmessage = handleMessage;
+
+  // Окно следит за выделением — если забыли выбрать фреймы, перезапускать не нужно
+  figma.on('selectionchange', () => {
+    figma.ui.postMessage({ type: 'selection', items: getSelection().items });
+  });
 });
 
 async function handleMessage(msg: UIMessage): Promise<void> {
@@ -304,11 +309,6 @@ async function handleMessage(msg: UIMessage): Promise<void> {
 }
 
 async function start(): Promise<void> {
-  if (command !== 'file-link' && getSelection().items.length === 0) {
-    figma.closePlugin(t.selectNodes);
-    return;
-  }
-
   const state = readFileKey();
   fileKey = state.fileKey;
 
@@ -320,7 +320,8 @@ async function start(): Promise<void> {
 }
 
 async function proceed(): Promise<void> {
-  if (command === 'open' || command === 'file-link') return showLinks();
+  // Без выделения быстрая команда тоже открывает окно и ждёт выбора
+  if (command === 'open' || command === 'file-link' || getSelection().items.length === 0) return showLinks();
 
   // Быстрая команда: копируем через скрытое окно, при ошибке показываем его
   figma.ui.postMessage({
