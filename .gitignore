@@ -11,8 +11,6 @@ build/
 *.log
 *.tmp
 *.temp
-tsconfig.json
-package.json
 
 # IDE
 .vscode/
@@ -39,3 +37,6 @@ RELEASE_NOTES.md
 
 # Environment
 .env* 
+# Plugin icon
+!icon.png
+!icon.svg

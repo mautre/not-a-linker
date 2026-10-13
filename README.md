@@ -1,66 +1,72 @@
 # Not a Linker 🔗
 
-**Quick frame and section link copying for Figma with multilingual support**
+**Quick link copying for Figma frames, sections and components — as links, text or Markdown**
 
 *Available in 9 languages: English, Русский, Deutsch, Français, Español, Português, 日本語, 한국어, 中文*
-
-> **⚠️ Important**: This plugin uses `enablePrivatePluginApi` for reliable file key access, which means it works only as a local development plugin. It cannot be published to Figma Community due to private API usage.
 
 ---
 
 ## 🇷🇺 Описание на русском
 
-**Быстрое копирование ссылок на фреймы и секции в Figma с поддержкой многих языков**
-
 ### 🎯 Что делает плагин
 
-Not a Linker копирует отформатированные ссылки на выбранные фреймы и секции в двух форматах: обычный текст и кликабельные HTML-ссылки. Идеально подходит для:
-- **Документации** - Делитесь ссылками на конкретные элементы дизайна
-- **Ревью дизайна** - Ссылки напрямую на компоненты в мессенджерах
-- **Передачи в разработку** - Предоставляйте разработчикам точные ссылки на фреймы
-- **Командной работы** - Быстрый обмен элементами дизайна в Telegram, Slack и т.д.
+Not a Linker копирует ссылки на выбранные элементы в формате, который подходит для места вставки:
+- **Ссылки** — названия становятся кликабельными ссылками (Telegram, Заметки, Google Docs)
+- **Текст** — название и URL обычным текстом (работает везде)
+- **Markdown** — `[Название](url)` для GitHub, Notion, Obsidian
 
 ### ✨ Основные возможности
 
-- ⚡ **Умное копирование** - Выберите фреймы → Получите отформатированные ссылки одним кликом
-- 🌍 **9 языков** - Автоматически определяет язык браузера
-- 🔗 **Двойной формат** - Копирует и обычный текст, и кликабельные HTML-ссылки
-- 📱 **Готов для приложений** - Отлично работает в Telegram, Slack, Notes и других приложениях
-- 🎨 **Фреймы и секции** - Работает с обоими типами контента
-- 🚀 **Легковесный** - Не требует интернета, работает офлайн
+- 🎨 **Фреймы, секции, компоненты, инстансы и группы**
+- 👀 **Превью** — видно, что именно скопируется, до копирования
+- ⚡ **Быстрые команды** — `⌘/` → Not a Linker → Tab → формат копирует без окна
+- 🧠 **Запоминает формат** — последний выбранный формат срабатывает по Enter
+- 🌍 **9 языков** — определяется по языку браузера
+- 🚀 **Без интернета** — плагин не обращается к сети
 
-### 🔧 Установка
+### 🔑 Первый запуск в файле
 
-Поскольку плагин использует приватные API, он должен быть установлен локально:
+Плагины Figma не знают адрес файла, поэтому при первом запуске плагин попросит ссылку на файл
+(`Share → Copy link` или адрес из браузера). Ссылка сохраняется **в самом файле**, так что
+вставить её нужно один раз, и она заработает у всей команды.
+
+Если файл продублировали или переименовали, плагин попросит проверить ссылку.
+Сменить её вручную: `⌘/` → Not a Linker → Tab → `Change file link…`.
+
+### 🔧 Установка из исходников
 
 1. **Клонируйте** репозиторий: `git clone https://github.com/mautre/not-a-linker.git`
 2. **Импортируйте** в Figma: `Плагины → Разработка → Импорт плагина из манифеста`
 3. **Выберите** файл `manifest.json` из клонированной директории
 
-> **Примечание**: Сборка не требуется - плагин готов к использованию!
+> **Примечание**: собранный `code.js` лежит в репозитории, так что сборка не нужна.
+> Для разработки: `npm install`, затем `npm run watch`.
 
 ### 🚀 Как использовать
 
-1. **Выберите** один или несколько фреймов/секций в Figma
-2. **Запустите** плагин из меню: `Плагины → Разработка → Not a Linker`
-3. **Нажмите** кнопку "Скопировать и закрыть" в интерфейсе
-4. **Вставьте** отформатированные ссылки где угодно
+1. **Выберите** один или несколько элементов
+2. **Запустите** Not a Linker (`⌘/` → Not a Linker → Enter)
+3. **Нажмите** нужный формат (наведите курсор, чтобы увидеть превью)
+4. **Вставьте** куда угодно
+
+Или сразу без окна: `⌘/` → Not a Linker → Tab → `Links`, `Text` или `Markdown`.
 
 ### 📋 Что копируется
 
-**Формат обычного текста:**
+**Текст:**
 ```
 Название фрейма
-https://www.figma.com/file/abc123?node-id=123%3A456
+https://www.figma.com/design/abc123/File?node-id=123-456
 
 Другой фрейм
-https://www.figma.com/file/abc123?node-id=789%3A012
+https://www.figma.com/design/abc123/File?node-id=789-12
 ```
 
-**HTML формат (для кликабельных ссылок):**
-- Названия фреймов становятся кликабельными ссылками
-- Идеально для мессенджеров типа Telegram
-- Работает в текстовых редакторах и инструментах документации
+**Markdown:**
+```
+[Название фрейма](https://www.figma.com/design/abc123/File?node-id=123-456)
+[Другой фрейм](https://www.figma.com/design/abc123/File?node-id=789-12)
+```
 
 ---
 
@@ -68,53 +74,46 @@ https://www.figma.com/file/abc123?node-id=789%3A012
 
 ## 🎯 What it does
 
-Not a Linker copies formatted links to your selected frames and sections in both plain text and clickable HTML format. Perfect for:
-- **Documentation** - Share specific design references with clickable links
-- **Design reviews** - Link directly to components in messaging apps
-- **Handoff** - Provide developers with exact frame links
-- **Team collaboration** - Quick sharing of design elements in Telegram, Slack, etc.
+Not a Linker copies links to the selected layers in the format that fits where you paste:
+- **Links** — names become clickable links (Telegram, Notes, Google Docs)
+- **Text** — name and URL as plain text (works anywhere)
+- **Markdown** — `[Name](url)` for GitHub, Notion, Obsidian
 
 ## ✨ Key Features
 
-- ⚡ **Smart copying** - Select frames → Get formatted links with one click
-- 🌍 **9 languages** - Auto-detects your browser language
-- 🔗 **Dual format** - Copies both plain text and clickable HTML links
-- 📱 **App-ready** - Works great in Telegram, Slack, Notes, and other apps
-- 🎨 **Frames & Sections** - Works with both content types
-- 🚀 **Lightweight** - No network access, works offline
+- 🎨 **Frames, sections, components, instances and groups**
+- 👀 **Preview** — see exactly what will be copied
+- ⚡ **Quick commands** — `⌘/` → Not a Linker → Tab → format copies without a window
+- 🧠 **Remembers your format** — the last one is triggered by Enter
+- 🌍 **9 languages** — auto-detected from your browser
+- 🚀 **Offline** — no network access
 
-## 🔧 Installation
+## 🔑 First run in a file
 
-Since this plugin uses private APIs, it must be installed locally:
+Figma plugins can't read the file's address, so on the first run the plugin asks for a link to the file
+(`Share → Copy link` or the browser URL). It's saved **inside the file**, so it's asked once
+and then works for the whole team.
+
+If the file is duplicated or renamed, the plugin asks you to check the link.
+To change it manually: `⌘/` → Not a Linker → Tab → `Change file link…`.
+
+## 🔧 Install from source
 
 1. **Clone** this repository: `git clone https://github.com/mautre/not-a-linker.git`
 2. **Import** in Figma: `Plugins → Development → Import plugin from manifest`
 3. **Select** the `manifest.json` file from the cloned directory
 
-> **Note**: No build step required - the plugin is ready to use!
+> **Note**: the built `code.js` is committed, so no build step is required.
+> For development: `npm install`, then `npm run watch`.
 
 ## 🚀 How to use
 
-1. **Select** one or more frames/sections in Figma
-2. **Run** the plugin from menu: `Plugins → Development → Not a Linker`
-3. **Click** "Copy and Close" button in the interface
-4. **Paste** the formatted links anywhere you need them
+1. **Select** one or more layers
+2. **Run** Not a Linker (`⌘/` → Not a Linker → Enter)
+3. **Click** a format (hover to preview it)
+4. **Paste** anywhere
 
-## 📋 What gets copied
-
-**Plain text format:**
-```
-My Frame Name
-https://www.figma.com/file/abc123?node-id=123%3A456
-
-Another Frame
-https://www.figma.com/file/abc123?node-id=789%3A012
-```
-
-**HTML format (for clickable links):**
-- Frame names become clickable links
-- Perfect for messaging apps like Telegram
-- Works in rich text editors and documentation tools
+Or skip the window: `⌘/` → Not a Linker → Tab → `Links`, `Text` or `Markdown`.
 
 ---
 
@@ -138,4 +137,4 @@ https://www.figma.com/file/abc123?node-id=789%3A012
 
 MIT License - Free for personal and commercial use.
 
-*Made with ❤️ for the Figma Community* 
+*Made with ❤️ for the Figma Community*

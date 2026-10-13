@@ -5,11 +5,18 @@
   "main": "code.js",
   "capabilities": [],
   "enableProposedApi": false,
-  "enablePrivatePluginApi": true,
   "documentAccess": "dynamic-page",
   "editorType": ["figma"],
   "ui": "ui.html",
+  "parameters": [
+    {
+      "name": "Format",
+      "key": "format",
+      "description": "Copy without opening the window"
+    }
+  ],
+  "parameterOnly": false,
   "networkAccess": {
     "allowedDomains": ["none"]
   }
-} 
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/schemas/json/tsconfig.json",
+  "compilerOptions": {
+    "target": "es6",
+    "lib": ["es6", "dom", "es2017", "es2022.error"],
+    "strict": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./node_modules/@figma"
+    ],
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+    "module": "commonjs"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

@@ -5,20 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Not a Linker</title>
     <style>
-        /* CSS ПЕРЕМЕННЫЕ */
+        /* CSS ПЕРЕМЕННЫЕ — цвета берём из темы Figma (themeColors) */
         :root {
-            --color-primary: #007bff;
-            --color-border: #dee2e6;
-            --color-background: #ffffff;
-            --color-text: #212529;
-            --color-textarea-bg: #f9f9f9;
-            
-            --spacing-xs: 0.25rem;
-            --spacing-sm: 0.5rem;
-            --spacing-md: 1rem;
-            
-            --border-radius: 0.375rem;
-            --font-size-sm: 0.875rem;
+            --color-bg: var(--figma-color-bg, #ffffff);
+            --color-bg-secondary: var(--figma-color-bg-secondary, #f5f5f5);
+            --color-bg-hover: var(--figma-color-bg-hover, #f0f0f0);
+            --color-text: var(--figma-color-text, #1e1e1e);
+            --color-text-secondary: var(--figma-color-text-secondary, #757575);
+            --color-text-link: var(--figma-color-text-brand, #0d99ff);
+            --color-text-danger: var(--figma-color-text-danger, #dc3412);
+            --color-border: var(--figma-color-border, #e6e6e6);
+            --color-border-selected: var(--figma-color-border-selected, #0d99ff);
+            --color-border-danger: var(--figma-color-border-danger, #f24822);
+            --color-primary: var(--figma-color-bg-brand, #0d99ff);
+            --color-primary-hover: var(--figma-color-bg-brand-hover, #007be5);
+            --color-on-primary: var(--figma-color-text-onbrand, #ffffff);
+
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 12px;
+
+            --border-radius: 6px;
+            --font-size-sm: 11px;
+            --font-size-md: 12px;
             --font-weight-medium: 500;
         }
 
@@ -27,191 +36,378 @@
             box-sizing: border-box;
         }
 
-        body {
-            margin: 0;
-            padding: var(--spacing-md);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: var(--font-size-sm);
-            line-height: 1.5;
-            color: var(--color-text);
-            background-color: var(--color-background);
-            height: 100vh;
-        }
-
-        /* КОМПОНЕНТЫ */
-        .App {
-            display: flex;
-            flex-direction: column;
+        html, body {
             height: 100%;
         }
 
-        .Main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        body {
+            margin: 0;
+            padding: var(--spacing-md);
+            font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: var(--font-size-md);
+            line-height: 1.4;
+            color: var(--color-text);
+            background-color: var(--color-bg);
         }
 
-        .CopyInterface {
+        [hidden] {
+            display: none !important;
+        }
+
+        /* КОМПОНЕНТЫ */
+        .View {
             display: flex;
             flex-direction: column;
             gap: var(--spacing-sm);
             height: 100%;
         }
 
-        .CopyInterface_Message {
-            color: var(--color-text);
+        .View_Title {
             font-weight: var(--font-weight-medium);
-            font-size: var(--font-size-sm);
-            margin-bottom: var(--spacing-xs);
         }
 
-        .CopyInterface_Textarea {
+        .View_Hint {
+            color: var(--color-text-secondary);
+            font-size: var(--font-size-sm);
+        }
+
+        .View_Error {
+            color: var(--color-text-danger);
+            font-size: var(--font-size-sm);
+        }
+
+        .View_Spacer {
             flex: 1;
+        }
+
+        .Input {
             width: 100%;
-            min-height: 80px;
-            padding: var(--spacing-sm);
+            padding: 6px var(--spacing-sm);
             border: 1px solid var(--color-border);
             border-radius: var(--border-radius);
-            font-family: monospace;
-            font-size: 11px;
-            resize: none;
-            background-color: var(--color-textarea-bg);
+            font: inherit;
             color: var(--color-text);
+            background-color: var(--color-bg);
             outline: none;
         }
 
-        .CopyInterface_Textarea:focus {
-            border-color: var(--color-primary);
+        .Input:focus {
+            border-color: var(--color-border-selected);
+        }
+
+        .Input-invalid,
+        .Input-invalid:focus {
+            border-color: var(--color-border-danger);
+        }
+
+        .Formats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xs);
         }
 
         .Button {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: var(--spacing-xs);
-            padding: var(--spacing-sm) var(--spacing-md);
-            border: none;
+            min-height: 32px;
+            padding: 0 var(--spacing-sm);
+            border: 1px solid var(--color-border);
             border-radius: var(--border-radius);
-            font-size: var(--font-size-sm);
+            font: inherit;
             font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+            background-color: var(--color-bg);
             cursor: pointer;
-            transition: all 0.15s ease-in-out;
-            min-height: 36px;
-            width: 100%;
+            outline: none;
         }
 
         .Button:hover {
-            transform: translateY(-1px);
+            background-color: var(--color-bg-hover);
         }
 
-        .Button:active {
-            transform: translateY(0);
+        .Button:focus-visible {
+            border-color: var(--color-border-selected);
+            box-shadow: 0 0 0 1px var(--color-border-selected);
         }
 
         .Button-primary {
+            border-color: transparent;
+            color: var(--color-on-primary);
             background-color: var(--color-primary);
-            color: white;
         }
 
         .Button-primary:hover {
-            background-color: #0056b3;
+            background-color: var(--color-primary-hover);
         }
 
-        .Button_Text {
-            font-size: inherit;
-            font-weight: inherit;
+        .Button-primary:focus-visible {
+            box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 3px var(--color-border-selected);
+        }
+
+        .Preview {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            background-color: var(--color-bg-secondary);
+            font-size: var(--font-size-sm);
+            white-space: pre-wrap;
+            word-break: break-all;
+            user-select: text;
+        }
+
+        .Preview-mono {
+            font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .Preview_Link {
+            color: var(--color-text-link);
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="App">
-        <main class="Main">
-            <div class="CopyInterface">
-                <div class="CopyInterface_Message" id="message">Links ready to copy:</div>
-                <textarea class="CopyInterface_Textarea" id="result" readonly></textarea>
-                <button class="Button Button-primary" id="copyButton" onclick="copyAndClose()">
-                    <span class="Button_Text">Copy and Close</span>
-                </button>
-            </div>
-        </main>
+    <!-- Ввод ссылки на файл -->
+    <form class="View" id="askView" hidden novalidate>
+        <div class="View_Title" id="askTitle"></div>
+        <div class="View_Hint" id="askHint"></div>
+        <input class="Input" id="fileLink" type="text" autocomplete="off" spellcheck="false"
+            placeholder="https://www.figma.com/design/…" aria-describedby="fileLinkError">
+        <div class="View_Error" id="fileLinkError" hidden></div>
+        <div class="View_Spacer"></div>
+        <button class="Button Button-primary" id="saveButton" type="submit"></button>
+    </form>
+
+    <!-- Выбор формата -->
+    <div class="View" id="linksView" hidden>
+        <div class="Formats" id="formats" role="group">
+            <button class="Button" type="button" data-format="links"></button>
+            <button class="Button" type="button" data-format="text"></button>
+            <button class="Button" type="button" data-format="markdown"></button>
+        </div>
+        <div class="Preview" id="preview"></div>
+        <div class="View_Hint" id="formatHint"></div>
     </div>
 
     <script>
-        let plainTextForCopy = '';
-        let htmlTextForCopy = '';
-        let currentTranslations = {
-            readyToCopy: 'Links ready to copy:',
-            copyAndClose: 'Copy and Close'
-        };
+        const FILE_LINK_PATTERN = /figma\.com\/(?:file|design|proto|board|slides)\/([A-Za-z0-9]+)/;
+        const FILE_KEY_PATTERN = /^[A-Za-z0-9]{10,}$/;
+        const FORMATS = ['links', 'text', 'markdown'];
 
-        function escapeHTML(str) {
-            const p = document.createElement('p');
-            p.appendChild(document.createTextNode(str));
-            return p.innerHTML;
-        }
+        let items = [];
+        let t = {};
+
+        const el = id => document.getElementById(id);
+        const post = message => parent.postMessage({ pluginMessage: message }, '*');
 
         function getUserLanguage() {
             const browserLang = navigator.language.toLowerCase();
             const supportedLanguages = ['en', 'ru', 'de', 'fr', 'es', 'pt', 'ja', 'ko', 'zh-cn'];
-            
+
             const lang = supportedLanguages.find(l => l === browserLang || l === browserLang.split('-')[0]);
             return lang || 'en';
         }
 
-        function updateUI(translations) {
-            if (translations) {
-                currentTranslations = translations;
-                document.getElementById('message').textContent = translations.readyToCopy;
-                document.getElementById('copyButton').querySelector('.Button_Text').textContent = translations.copyAndClose;
-            }
+        // ==========================================
+        // ФОРМАТЫ
+        // ==========================================
+
+        function escapeHTML(str) {
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
         }
-        
-        function copyRichText(htmlContent, plainTextContent) {
-            const listener = (event) => {
-                event.clipboardData.setData('text/html', htmlContent);
-                event.clipboardData.setData('text/plain', plainTextContent);
+
+        function escapeMarkdown(str) {
+            return str.replace(/([\\[\]])/g, '\\$1');
+        }
+
+        function toText() {
+            return items.map(item => `${item.name}\n${item.link}`).join('\n\n');
+        }
+
+        function toMarkdown() {
+            return items.map(item => `[${escapeMarkdown(item.name)}](${item.link})`).join('\n');
+        }
+
+        function toHTML() {
+            const links = items.map(item => `<a href="${escapeHTML(item.link)}">${escapeHTML(item.name)}</a>`).join('<br>');
+            return `<p><!--StartFragment-->${links}<!--EndFragment--></p>`;
+        }
+
+        // «Ссылки» кладут HTML и текст — приложение возьмёт что умеет.
+        // «Текст» и «Markdown» — только text/plain, чтобы ничего не превратилось в ссылку
+        function getClipboard(format) {
+            if (format === 'links') return { html: toHTML(), plain: toText() };
+            if (format === 'markdown') return { plain: toMarkdown() };
+            return { plain: toText() };
+        }
+
+        // ==========================================
+        // КОПИРОВАНИЕ
+        // ==========================================
+
+        // navigator.clipboard в iframe плагина заблокирован — копируем через execCommand.
+        // Выделенный textarea нужен, чтобы copy сработал и в скрытом окне
+        function copy(format) {
+            const { html, plain } = getClipboard(format);
+            const previous = document.activeElement;
+            const area = document.createElement('textarea');
+            area.value = plain;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            document.body.appendChild(area);
+            area.select();
+
+            const listener = event => {
+                if (html) event.clipboardData.setData('text/html', html);
+                event.clipboardData.setData('text/plain', plain);
                 event.preventDefault();
             };
+
+            let ok = false;
             document.addEventListener('copy', listener);
-            const success = document.execCommand('copy');
+            try {
+                ok = document.execCommand('copy');
+            } catch (_error) {
+                ok = false;
+            }
             document.removeEventListener('copy', listener);
-            
-            return success ? Promise.resolve() : Promise.reject(new Error('execCommand failed'));
+            area.remove();
+            if (previous && previous.focus) previous.focus();
+
+            post(ok ? { type: 'copied', format } : { type: 'copy-failed' });
         }
 
-        function copyAndClose() {
-            copyRichText(htmlTextForCopy, plainTextForCopy)
-                .then(() => parent.postMessage({ pluginMessage: { type: 'copied' } }, '*'))
-                .catch(err => {
-                    console.error('Copy error:', err);
-                    parent.postMessage({ pluginMessage: { type: 'error' } }, '*');
-                });
+        // ==========================================
+        // ВЫБОР ФОРМАТА
+        // ==========================================
+
+        const formatButtons = Array.from(el('formats').querySelectorAll('[data-format]'));
+
+        function preview(format) {
+            const box = el('preview');
+            box.classList.toggle('Preview-mono', format !== 'links');
+
+            if (format === 'links') {
+                box.innerHTML = items
+                    .map(item => `<span class="Preview_Link">${escapeHTML(item.name)}</span>`)
+                    .join('\n');
+            } else {
+                box.textContent = getClipboard(format).plain;
+            }
+
+            const hints = { links: t.hintLinks, text: t.hintText, markdown: t.hintMarkdown };
+            el('formatHint').textContent = hints[format];
         }
 
-        window.onmessage = (event) => {
+        function showLinks(format) {
+            const labels = { links: t.formatLinks, text: t.formatText, markdown: t.formatMarkdown };
+            formatButtons.forEach(button => {
+                const current = button.dataset.format;
+                button.textContent = labels[current];
+                button.classList.toggle('Button-primary', current === format);
+            });
+
+            el('askView').hidden = true;
+            el('linksView').hidden = false;
+            preview(format);
+
+            // Последний формат в фокусе — достаточно нажать Enter
+            formatButtons.find(button => button.dataset.format === format).focus();
+        }
+
+        formatButtons.forEach((button, index) => {
+            const format = button.dataset.format;
+            button.addEventListener('click', () => copy(format));
+            button.addEventListener('mouseenter', () => preview(format));
+            button.addEventListener('focus', () => preview(format));
+            button.addEventListener('keydown', event => {
+                const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+                if (!step) return;
+                event.preventDefault();
+                formatButtons[(index + step + formatButtons.length) % formatButtons.length].focus();
+            });
+        });
+
+        el('formats').addEventListener('mouseleave', () => {
+            if (formatButtons.includes(document.activeElement)) preview(document.activeElement.dataset.format);
+        });
+
+        // ==========================================
+        // ССЫЛКА НА ФАЙЛ
+        // ==========================================
+
+        function parseFileKey(value) {
+            const match = value.match(FILE_LINK_PATTERN);
+            if (match) return match[1];
+            return FILE_KEY_PATTERN.test(value) ? value : '';
+        }
+
+        function showAsk(reason, fileKey) {
+            el('askTitle').textContent = t.askTitle;
+            el('askHint').textContent = reason === 'changed' ? t.askChanged : t.askHint;
+            el('saveButton').textContent = t.save;
+
+            const input = el('fileLink');
+            input.value = fileKey ? `https://www.figma.com/design/${fileKey}` : '';
+
+            el('linksView').hidden = true;
+            el('askView').hidden = false;
+            input.focus();
+            input.select();
+        }
+
+        function setLinkError(message) {
+            el('fileLinkError').textContent = message;
+            el('fileLinkError').hidden = !message;
+            el('fileLink').classList.toggle('Input-invalid', Boolean(message));
+        }
+
+        el('fileLink').addEventListener('input', () => setLinkError(''));
+
+        el('askView').addEventListener('submit', event => {
+            event.preventDefault();
+            const fileKey = parseFileKey(el('fileLink').value.trim());
+            if (!fileKey) {
+                setLinkError(t.invalidLink);
+                return;
+            }
+            post({ type: 'save-file-key', fileKey });
+        });
+
+        // ==========================================
+        // СООБЩЕНИЯ
+        // ==========================================
+
+        window.onmessage = event => {
             const message = event.data.pluginMessage;
-            
-            if (message?.type === 'copy-to-clipboard') {
-                const frameData = message.data;
+            if (!message) return;
 
-                const linksHtml = frameData.map(frame => `<a href="${frame.link}">${escapeHTML(frame.name)}</a>`).join('<br>');
-                htmlTextForCopy = `<p><!--StartFragment-->${linksHtml}<!--EndFragment--></p>`;
-                plainTextForCopy = frameData.map(frame => `${frame.name}\n${frame.link}`).join('\n\n');
-                
-                if (message.translations) {
-                    updateUI(message.translations);
-                }
-                
-                document.getElementById('result').value = plainTextForCopy;
+            if (message.t) t = message.t;
+            if (message.items) items = message.items;
+
+            switch (message.type) {
+                case 'show-links':
+                    showLinks(FORMATS.includes(message.format) ? message.format : 'links');
+                    break;
+
+                case 'copy-now':
+                    copy(message.format);
+                    break;
+
+                case 'ask-file-key':
+                    showAsk(message.reason, message.fileKey);
+                    break;
             }
         };
 
-        parent.postMessage({ 
-            pluginMessage: { 
-                type: 'ui-ready',
-                language: getUserLanguage()
-            } 
-        }, '*');
+        post({ type: 'ui-ready', language: getUserLanguage() });
     </script>
 </body>
-</html> 
+</html>
