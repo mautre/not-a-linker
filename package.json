@@ -1,6 +1,6 @@
 {
   "name": "not-a-linker",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Copy links to selected Figma frames, sections and components",
   "main": "code.js",
   "scripts": {
